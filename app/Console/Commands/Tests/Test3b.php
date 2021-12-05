@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Tests;
 
 use function array_key_exists;
 use function bindec;
 use function count;
 use function str_split;
 
-class Test3b extends Test
+class Test3b implements Test
 {
-    protected function getResult(array $inputs): string|int
+    public function getResult(array $inputs): int
     {
         $oxygen = $this->getNumberForBitCriteria(
             $inputs,

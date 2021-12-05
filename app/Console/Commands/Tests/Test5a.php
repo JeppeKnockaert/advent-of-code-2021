@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Tests;
 
 use Illuminate\Support\Str;
 use function array_key_exists;
 use function explode;
 
-class Test5a extends Test
+class Test5a implements Test
 {
     private array $coveredPoints = [];
     private int $numberOfPointsGreaterThan2 = 0;
 
-    protected function getResult(array $inputs): string|int
+    public function getResult(array $inputs): int
     {
-        $this->coveredPoints = [];
-        $this->numberOfPointsGreaterThan2 = 0;
-
         foreach ($inputs as $input) {
             $from = explode(',', Str::before($input, ' -> '));
             $to = explode(',', Str::after($input, ' -> '));

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Tests;
 
 use function array_key_exists;
 use function collect;
 use function count;
 use function str_split;
 
-class Test3a extends Test
+class Test3a implements Test
 {
-    protected function getResult(array $inputs): string|int
+    public function getResult(array $inputs): int
     {
         $bits = [];
 

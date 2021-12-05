@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Tests;
 
 use function array_flip;
 use function array_key_exists;
@@ -13,9 +13,9 @@ use function min;
 use function preg_split;
 use function trim;
 
-class Test4b extends Test
+class Test4b implements Test
 {
-    protected function getResult(array $inputs): string|int
+    public function getResult(array $inputs): int
     {
         $bingoInputs = array_flip(explode(',', $inputs[0]));
 

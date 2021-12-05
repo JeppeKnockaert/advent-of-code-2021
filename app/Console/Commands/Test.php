@@ -5,25 +5,32 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use function class_basename;
+use function app;
 use function explode;
 use function trim;
 
-abstract class Test extends Command
+class Test extends Command
 {
-    private int $testNumber;
+    private int $testNumber = 0;
+    private string $identifier = '';
 
-    public function __construct()
-    {
-        $this->name = Str::lower(class_basename(static::class));
-        parent::__construct();
-        $this->testNumber = (int) Str::substr($this->name, 4, 1);
-    }
+    protected $signature = 'test {identifier} {--skip-test}';
 
     public function handle(): void
     {
-        $this->info('Test: ' . $this->getResult($this->getTestInput()));
+        $this->identifier = $this->argument('identifier');
+        $this->testNumber = (int) Str::substr($this->identifier, 0, Str::length($this->identifier) - 1);
+
+        if (!$this->option('skip-test')) {
+            $this->info('Test: ' . $this->getResult($this->getTestInput()));
+        }
+
         $this->info('Result: ' . $this->getResult($this->getInput()));
+    }
+
+    private function getResult(array $input): int
+    {
+        return app(__NAMESPACE__ . '\Tests\\' . 'Test' . $this->identifier)->getResult($input);
     }
 
     protected function getInput(): array
@@ -47,6 +54,4 @@ abstract class Test extends Command
 
         return explode("\n", trim(Storage::get($fileName)));
     }
-
-    abstract protected function getResult(array $inputs): string|int;
 }

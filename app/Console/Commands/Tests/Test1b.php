@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands\Tests;
 
-use App\Console\Commands\Test;
 use function collect;
 use function count;
 
-class Test1b extends Test
+class Test1b implements Test
 {
-    protected function getResult(array $inputs): string|int
+    public function getResult(array $inputs): int
     {
         $higherThenBefore = 0;
         $windows = [];

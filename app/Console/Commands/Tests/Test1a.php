@@ -2,11 +2,9 @@
 
 namespace App\Console\Commands\Tests;
 
-use App\Console\Commands\Test;
-
-class Test1a extends Test
+class Test1a implements Test
 {
-    protected function getResult(array $inputs): string|int
+    public function getResult(array $inputs): int
     {
         $higherThenBefore = 0;
         $previousInput = $inputs[0];
