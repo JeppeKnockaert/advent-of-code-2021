@@ -1,7 +1,0 @@
-*
-!inputs/
-!inputs/*
-!tests/
-!tests/*
-!public/
-!.gitignore

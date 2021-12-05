@@ -3,10 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use function app;
 use function explode;
+use function file_exists;
+use function file_put_contents;
 use function trim;
 
 class Test extends Command
@@ -46,12 +47,12 @@ class Test extends Command
 
     private function getInputsForInputFileInDirectory(string $directory): array
     {
-        $fileName = $directory . '/input' . $this->testNumber;
+        $fileName = __DIR__ . '/../../../storage/' . $directory . '/input' . $this->testNumber;
 
-        if (!Storage::exists($fileName)) {
-            Storage::put($fileName, '');
+        if (!file_exists($fileName)) {
+            file_put_contents($fileName, '');
         }
 
-        return explode("\n", trim(Storage::get($fileName)));
+        return explode("\n", trim(file_get_contents($fileName)));
     }
 }
