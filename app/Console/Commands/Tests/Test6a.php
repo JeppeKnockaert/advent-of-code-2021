@@ -3,7 +3,6 @@
 namespace App\Console\Commands\Tests;
 
 use Illuminate\Support\Collection;
-use function str_repeat;
 
 class Test6a implements Test
 {
@@ -13,7 +12,7 @@ class Test6a implements Test
     {
         $this->ages = collect(explode(',', $inputs[0]));
 
-        for ($i = 0; $i < 256; $i++) {
+        for ($i = 0; $i < 80; $i++) {
             $this->ageFish();
         }
 

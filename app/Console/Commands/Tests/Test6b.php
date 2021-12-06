@@ -4,14 +4,12 @@ namespace App\Console\Commands\Tests;
 
 class Test6b implements Test
 {
-    private array $ages = [];
     private array $countByAge = [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0];
 
     public function getResult(array $inputs): int
     {
-        $this->ages = explode(',', $inputs[0]);
-
-        foreach ($this->ages as $age) {
+        $ages = explode(',', $inputs[0]);
+        foreach ($ages as $age) {
             $this->countByAge[$age]++;
         }
 
