@@ -21,12 +21,8 @@ class Test7b implements Test
 
     private function calculateCost(int $position, int $destination): int
     {
-        $cost = 0;
         $distance = abs($position - $destination);
-        for ($i = 1; $i <= $distance; $i++) {
-            $cost += $i;
-        }
 
-        return $cost;
+        return ($distance * ($distance + 1))/2;
     }
 }
