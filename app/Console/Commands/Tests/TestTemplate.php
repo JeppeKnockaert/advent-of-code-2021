@@ -16,6 +16,15 @@ class TestTemplate implements Test
     {
         $output = 0;
 
+        foreach ($inputs as $input) {
+            // TODO
+        }
+
+        return $output;
+    }
+
+    private function processInputMatrix(array $inputs): void
+    {
         $this->inputMatrix = array_map(fn($input) => str_split($input), $inputs);
         $this->rows = count($this->inputMatrix);
         $this->cols = count($this->inputMatrix[0]);
@@ -25,11 +34,5 @@ class TestTemplate implements Test
                 // TODO
             }
         }
-
-        foreach ($inputs as $input) {
-            // TODO
-        }
-
-        return $output;
     }
 }
