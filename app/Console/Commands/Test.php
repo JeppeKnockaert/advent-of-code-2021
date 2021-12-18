@@ -14,11 +14,13 @@ class Test extends Command
 {
     private int $testNumber = 0;
     private string $identifier = '';
+    private ?int $year;
 
-    protected $signature = 'test {identifier} {--skip-test}';
+    protected $signature = 'test {identifier} {--skip-test} {--year=}';
 
     public function handle(): void
     {
+        $this->year = $this->option('year');
         $this->identifier = $this->argument('identifier');
         $this->testNumber = (int) Str::substr($this->identifier, 0, Str::length($this->identifier) - 1);
 
@@ -31,7 +33,8 @@ class Test extends Command
 
     private function getResult(array $input): int
     {
-        return app(__NAMESPACE__ . '\Tests\\' . 'Test' . $this->identifier)->getResult($input);
+        $yearNamespace = $this->year ? 'Y' .$this->year . '\\': '';
+        return app(__NAMESPACE__ . '\Tests\\' . $yearNamespace . 'Test' . $this->identifier)->getResult($input);
     }
 
     protected function getInput(): array
@@ -47,6 +50,7 @@ class Test extends Command
 
     private function getInputsForInputFileInDirectory(string $directory): array
     {
+        $directory = $this->year ? $this->year . '/' . $directory: $directory;
         $fileName = __DIR__ . '/../../../storage/' . $directory . '/input' . $this->testNumber;
 
         if (!file_exists($fileName)) {
