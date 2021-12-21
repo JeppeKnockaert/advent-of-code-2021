@@ -3,21 +3,22 @@
 namespace App\Console\Commands\Tests;
 
 use Illuminate\Support\Str;
-use function array_key_exists;
+use function implode;
 
 class Test21b implements Test
 {
-    private array $rollDistribution = [];
+    private array $rollDistribution = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    private array $winsCaching = [];
 
     public function getResult(array $inputs): int
     {
         $position = [
-            ((int) Str::after($inputs[0], ' starting position: ')) - 1,
-            ((int) Str::after($inputs[1], ' starting position: ')) - 1,
+            ((int)Str::after($inputs[0], ' starting position: ')) - 1,
+            ((int)Str::after($inputs[1], ' starting position: ')) - 1,
         ];
         $this->setRollDistribution();
 
-        return $this->getNumberOfWins(0, [0, 0], $position, 0, 0);
+        return $this->getNumberOfWins([0, 0], $position, 0);
     }
 
     private function setRollDistribution(): void
@@ -25,34 +26,34 @@ class Test21b implements Test
         for ($i = 1; $i <= 3; $i++) {
             for ($j = 1; $j <= 3; $j++) {
                 for ($k = 1; $k <= 3; $k++) {
-                    $sum = $i + $j + $k;
-                    if (!array_key_exists($sum, $this->rollDistribution)) {
-                        $this->rollDistribution[$sum] = 0;
-                    }
-                    $this->rollDistribution[$sum]++;
+                    $this->rollDistribution[$i + $j + $k]++;
                 }
             }
         }
     }
 
-    private function getNumberOfWins(int $dieSum, array $scores, array $position, int $player, int $universes): int
+    private function getNumberOfWins(array $scores, array $position, int $player): int
     {
         $wins = 0;
 
-        if ($universes !== 0) {
-            $position[$player] = ($position[$player] + $dieSum) % 10;
-            $scores[$player] += $position[$player] + 1;
-            $player = ($player + 1) % 2;
-        } else {
-            $universes = 1;
-        }
-
         if ($scores[0] < 21 && $scores[1] < 21) {
+            $newPlayer = ($player + 1) % 2;
+
             for ($i = 3; $i <= 9; $i++) {
-                $wins += $this->getNumberOfWins($i, $scores, $position, $player, $universes * $this->rollDistribution[$i]);
+                $newPosition = $position;
+                $newScores = $scores;
+
+                $newPosition[$player] = ($newPosition[$player] + $i) % 10;
+                $newScores[$player] += $newPosition[$player] + 1;
+
+                $key = implode('#', $newScores) . '.' . implode('#', $newPosition) . '.' . $newPlayer;
+                $newWins = $this->winsCaching[$key] ?? $this->getNumberOfWins($newScores, $newPosition, $newPlayer);
+                $this->winsCaching[$key] = $newWins;
+
+                $wins += $this->rollDistribution[$i] * $newWins;
             }
         }
 
-        return $scores[0] >= 21 ? $wins + $universes : $wins;
+        return $scores[0] >= 21 ? $wins + 1 : $wins;
     }
 }
